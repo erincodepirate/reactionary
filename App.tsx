@@ -1,13 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, SafeAreaView, Alert } from 'react-native';
+import Canvas from 'react-native-canvas';
 
 export default function App() {
+  let ctx;
+  var activateDraw = (ref: HTMLCanvasElement) => {
+    console.log('this is the canvas DOM element you want', ref)
+    ctx = ref.getContext('2d')
+    if (ctx) {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(20, 20, 100, 100);
+      // draw stuff
+    }
+  }
+  var activateCanvas = (<canvas ref={(e: HTMLCanvasElement) => activateDraw(e)} style={styles.canvas}></canvas>)
+
+
   return (
-    <View style={styles.container}>
-      <Text>Hello!</Text>
-      <Image style={styles.image} source={require('./img/lookatme.jpg')}/>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      { activateCanvas }
+    </SafeAreaView>
   );
 }
 
@@ -21,5 +33,10 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
     width: 200,
+  },
+  canvas: {
+    width: '100%', 
+    height: '100%', 
+    backgroundColor: 'black'
   }
 });
